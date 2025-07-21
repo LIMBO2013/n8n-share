@@ -16,12 +16,7 @@ fi
 
 # 启动 n8n 容器（后台运行）
 echo "🚀 启动 n8n 容器 ..."
-docker run -d --name n8n \
-  -p 5678:5678 \
-  -v n8n_data:/home/node/.n8n \
-  -e N8N_ALLOW_LOADING_CUSTOM_NODES=true \
-  -e N8N_ENABLE_NODE_DEV_MODE=true \
-  docker.n8n.io/n8nio/n8n
+docker run -it -d --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n -e N8N_ALLOW_LOADING_CUSTOM_NODES=true -e N8N_ENABLE_NODE_DEV_MODE=true docker.n8n.io/n8nio/n8n
 
 # 等待容器端口就绪（最多等 10 秒）
 echo "⏳ 正在等待 n8n 启动 ..."
