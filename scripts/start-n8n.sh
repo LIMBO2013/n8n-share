@@ -30,3 +30,25 @@ done
 # ✅ 用 Windows PowerShell 打开浏览器
 echo "🌐 打开浏览器 http://localhost:5678"
 powershell.exe start http://localhost:5678
+
+# 🔁 每秒刷新一次页面，直到 30 秒后，或页面正常为止
+echo "🔄 检查页面是否正常加载 ..."
+
+powershell.exe -Command "
+  \$max = 30
+  for (\$i = 0; \$i -lt \$max; \$i++) {
+    try {
+      \$response = Invoke-WebRequest -Uri 'http://localhost:5678' -UseBasicParsing -ErrorAction Stop
+      if (\$response.StatusCode -eq 200 -and \$response.Content -notmatch '502|error|not available|cannot') {
+        Write-Host '✅ 页面已正常加载！'
+        break
+      }
+    } catch {
+      # 页面未就绪
+    }
+    Start-Sleep -Seconds 1
+    # 刷新浏览器窗口（重新打开）
+    Start-Process 'http://localhost:5678'
+  }
+"
+
